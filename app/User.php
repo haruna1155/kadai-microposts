@@ -143,52 +143,56 @@ class User extends Authenticatable
         return Micropost::whereIn("user_id",$userIds);
     }
     
+    
     /**
-     * $micropostsIdで指定された投稿をお気に入りする。
-     */
-     public function favorite($micropostId)
-     {
-         // すでにお気に入りしているかの確認
-         $exist=$this->is_favorites($micropostId);
-         // 投稿が自分自身のものかどうかの確認
-         $its_me=$this->id==$micropostId;
-         
-         if($exist || $its_me){
-             //すでにお気に入りしていれば何もない
-             return false;
-         } else {
-             //お気に入りしていなければする
-             $this->favorites()->attach($micropostId);
-             return true;
-         }
-     }
-     
+    * $micropostsIdで指定された投稿をお気に入りする。
+    */
+    public function favorite($micropostId)
+    {
+        // すでにお気に入りしているかの確認
+        $exist=$this->is_favorites($micropostId);
+        // 投稿が自分自身のものかどうかの確認
+        $its_me=$this->id==$micropostId;
+        
+    if($exist || $its_me){
+        //すでにお気に入りしていれば何もない
+        return false;
+    } else {
+        //お気に入りしていなければする
+        $this->favorites()->attach($micropostId);
+        return true;
+    }
+    }
+    
     /**
-     * $micropostsIdで指定された投稿をお気に入りしない。
-     */ 
-     public function unfavorites($micropostId)
-     {
-          // すでにお気に入りしているかの確認
-         $exist=$this->is_favorites($micropostId);
-         // 投稿が自分自身のものかどうかの確認
-         $its_me=$this->id==$micropostId;
-         
-         if ($exist && !$its_me){
-             // すでにフォローしていればフォローを外す
-             $this->favorites()->detach($micropostId);
-             return true;
-         } else {
-             // 未フォローであれば何もしない
-             return false;
-         }
-     }
+    * $micropostsIdで指定された投稿をお気に入りしない。
+    */ 
+    public function unfavorite($micropostId)
+    {
+        // すでにお気に入りしているかの確認
+        $exist=$this->is_favorites($micropostId);
+        // 投稿が自分自身のものかどうかの確認
+        $its_me=$this->id==$micropostId;
      
-     //お気に入りの投稿ならtrueを返す。
-     public function is_favorites($micropostId)
-     {
-         return $this->favorites()->where("micropost_id",$micropostId)->exists();
-     }
-     
+    if ($exist && !$its_me){
+        // すでにお気に入りしていれば外す
+        $this->favorites()->detach($micropostId);
+        return true;
+    } else {
+        // 未お気に入りであれば何もしない
+        return false;
+    }
+    }
+    
+    /**
+    * 指定された$micropostIdの投稿がお気に入りの投稿ならtrueを返す。
+    * お気に入りの投稿の中に$micropostIdのものが存在するか
+    */
+    public function is_favorites($micropostId)
+    {
+    return $this->favorites()->where("micropost_id",$micropostId)->exists();
+    }     
+
     
     /**
      * このユーザに関係するモデルの件数をロードする。

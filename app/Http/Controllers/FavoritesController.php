@@ -16,7 +16,7 @@ class FavoritesController extends Controller
     //投稿をお気に入りから外すアクション
     public function destroy($id)
     {
-        \Auth::user()->unfavorites($id);
+        \Auth::user()->unfavorite($id);
         return back();
     }
 }

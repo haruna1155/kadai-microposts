@@ -1,4 +1,4 @@
-@extend("layouts.app")
+@extends("layouts.app")
 
 @section("content")
     <div class="row">
@@ -10,7 +10,7 @@
             {{--タブ--}}
             @include("users.navtabs")
            {{-- ユーザ一覧 --}}
-            @include('users.users')
+            @include('microposts.microposts')
         </div>
     </div>
 @endsection    
