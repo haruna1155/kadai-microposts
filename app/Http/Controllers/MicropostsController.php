@@ -56,7 +56,4 @@ class MicropostsController extends Controller
     }
     
 
-    
-    
-     
 }
